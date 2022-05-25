@@ -5,7 +5,7 @@ import Home from './views/Home';
 
 const App: FC = () => {
   return (
-    <div className="App max-w-3xl m-auto">
+    <div className="App m-auto px-4 lg:px-0 lg:max-w-3xl">
       <Router>
         <div>
           <Navigation />
