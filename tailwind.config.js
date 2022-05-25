@@ -8,6 +8,9 @@ module.exports = {
       fontSize: {
         base: '18px',
       },
+      colors: {
+        moss: '#3e5a21',
+      },
     },
   },
   plugins: [],

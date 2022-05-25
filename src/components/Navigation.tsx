@@ -7,7 +7,7 @@ function Navigation() {
   const now = DateTime.now().toFormat('DDDD');
 
   return (
-    <header className="relative h-[92px] sm:h-14 border-b border-dotted border-black flex items-start sm:items-center mb-10">
+    <header className="relative h-[92px] sm:h-14 border-b border-dotted border-moss flex items-start sm:items-center mb-10">
       <div className="flex w-full sm:flex-col gap-2 sm:gap-0 mt-4 sm:mt-0 justify-center text-xs font-sans tracking-tight">
         <span className="font-bold">{now}</span>
         <span>Today is the day</span>
@@ -19,9 +19,9 @@ function Navigation() {
               to="/"
               className={({ isActive }) =>
                 cx(
-                  'flex items-center gap-1 hover:bg-black/10 transition-all duration-200 px-2 rounded-md',
+                  'flex items-center gap-1 hover:bg-moss/10 transition-all duration-200 px-2 rounded-md',
                   {
-                    'font-bold bg-black/10 p-1 px-6 ': isActive,
+                    'font-bold bg-moss/10 p-1 px-6  text-moss': isActive,
                     'opacity-70 p-1': !isActive,
                   }
                 )
@@ -36,9 +36,10 @@ function Navigation() {
               to="/a"
               className={({ isActive }) =>
                 cx(
-                  'flex items-center gap-1 hover:bg-black/10 transition-all duration-200 rounded-md px-2',
+                  'flex items-center gap-1 hover:bg-moss/10 transition-all duration-200 rounded-md px-2',
                   {
-                    'font-bold bg-black/10 p-1 px-6 rounded-md': isActive,
+                    'font-bold bg-moss/10 p-1 px-6 rounded-md text-moss':
+                      isActive,
                     'opacity-70 p-1': !isActive,
                   }
                 )
