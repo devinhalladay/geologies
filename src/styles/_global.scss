@@ -1,0 +1,13 @@
+html,
+body {
+  @apply text-base;
+  font-family: 'New York', -apple-system-ui-serif, ui-serif, 'Georgia', serif;
+  background-color: #f8f2e2;
+  font-family: #444444;
+}
+
+@layer utilities {
+  .smallcaps {
+    font-variant: small-caps;
+  }
+}
