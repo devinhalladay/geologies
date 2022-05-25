@@ -7,7 +7,7 @@ function Navigation() {
   const now = DateTime.now().toFormat('DDDD');
 
   return (
-    <header className="relative h-[92px] sm:h-14 border-b border-dotted border-black flex items-start sm:items-center mb-6">
+    <header className="relative h-[92px] sm:h-14 border-b border-dotted border-black flex items-start sm:items-center mb-10">
       <div className="flex w-full sm:flex-col gap-2 sm:gap-0 mt-4 sm:mt-0 justify-center text-xs font-sans tracking-tight">
         <span className="font-bold">{now}</span>
         <span>Today is the day</span>
