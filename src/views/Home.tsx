@@ -1,7 +1,9 @@
 import React from 'react';
-import Navigation from '../components/Navigation';
+import { usePageViews } from '../hooks/analytics';
 
 function Home() {
+  usePageViews();
+
   return (
     <div className="sm:px-12">
       <h1 className="italic mb-4 block">Dear visitor,</h1>
