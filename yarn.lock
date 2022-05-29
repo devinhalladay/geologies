@@ -4267,6 +4267,11 @@ find-up@^5.0.0:
     locate-path "^6.0.0"
     path-exists "^4.0.0"
 
+flagged@^2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/flagged/-/flagged-2.0.3.tgz#b23dc21d2a074a6cbc5818b3fa4f3994c93bbb5c"
+  integrity sha512-s+1Ep0wt0Uo/9mvf8JwUOEH5zcK31yU/L8WAW3RB0A7nvIanIjtvz588cWh2PTdshs/soNGhX1uHyxpoAlkQqA==
+
 flat-cache@^3.0.4:
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/flat-cache/-/flat-cache-3.0.4.tgz#61b0338302b2fe9f957dcc32fc2a87f1c3048b11"

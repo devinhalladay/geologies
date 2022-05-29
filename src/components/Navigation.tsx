@@ -2,8 +2,11 @@ import { NavLink } from 'react-router-dom';
 import { GiBookshelf, GiGlobe } from 'react-icons/gi';
 import cx from 'classnames';
 import { DateTime } from 'luxon';
+import { useFeature } from 'flagged';
 
 function Navigation() {
+  const hasLibrary = useFeature('library');
+
   const now = DateTime.now().toFormat('DDDD');
 
   return (
@@ -31,24 +34,26 @@ function Navigation() {
               <span>Home</span>
             </NavLink>
           </li>
-          <li>
-            <NavLink
-              to="/a"
-              className={({ isActive }) =>
-                cx(
-                  'flex items-center gap-1 hover:bg-moss/10 transition-all duration-200 rounded-md px-2',
-                  {
-                    'font-bold bg-moss/10 p-1 px-6 rounded-md text-moss':
-                      isActive,
-                    'opacity-70 p-1': !isActive,
-                  }
-                )
-              }
-            >
-              <GiBookshelf size="1.5em" />
-              <span>Library</span>
-            </NavLink>
-          </li>
+          {hasLibrary && (
+            <li>
+              <NavLink
+                to="/a"
+                className={({ isActive }) =>
+                  cx(
+                    'flex items-center gap-1 hover:bg-moss/10 transition-all duration-200 rounded-md px-2',
+                    {
+                      'font-bold bg-moss/10 p-1 px-6 rounded-md text-moss':
+                        isActive,
+                      'opacity-70 p-1': !isActive,
+                    }
+                  )
+                }
+              >
+                <GiBookshelf size="1.5em" />
+                <span>Library</span>
+              </NavLink>
+            </li>
+          )}
         </ul>
       </nav>
       <div className="absolute -bottom-[4px] left-0 right-0 h-2 border-b border-black"></div>

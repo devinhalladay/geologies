@@ -3,11 +3,15 @@ import ReactDOM from 'react-dom/client';
 import './styles/main.scss';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { FlagsProvider } from 'flagged';
+import features from './constants/features';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <FlagsProvider features={features}>
+      <App />
+    </FlagsProvider>
   </React.StrictMode>
 );
 
