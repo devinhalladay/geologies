@@ -12,31 +12,33 @@ import {
   usePinch,
 } from '@use-gesture/react';
 
+import { motion } from 'framer-motion';
+import { AnimationControls } from 'framer-motion/types/animation/types';
+
 interface Props {
   pagesRef: any;
   pageIndex: number;
   pages: any[];
   ref: Ref<HTMLDivElement>;
-  anim: (...args: any[]) => ReactDOMAttributes;
+  bind: any;
+  animate: AnimationControls;
+  custom: any;
 }
 
 const Page: React.FC<Props> = React.forwardRef(
-  ({ pagesRef, pageIndex, pages, anim }, ref) => {
-    const [style, api] = useSpring(() => ({
-      translateY: 0,
-    }));
-
+  ({ pagesRef, pageIndex, pages, bind, animate, custom }, ref) => {
     return (
-      <animated.div
+      <motion.div
         key={pageIndex}
         ref={ref}
-        {...anim(pageIndex, [style, api])}
-        style={style}
+        {...bind(pageIndex)}
+        animate={animate}
+        custom={custom}
       >
-        <div className="w-full min-h-screen mb-1 bg-white border border-black/10 p-2">
+        <div className="w-full min-h-[400px] mb-1 bg-white border border-black/10 p-2 shadow-sm">
           <span className="font-sans text-gray-400">P {pageIndex}</span>
         </div>
-      </animated.div>
+      </motion.div>
     );
   }
 );
