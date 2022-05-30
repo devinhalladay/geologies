@@ -1,50 +1,67 @@
 import { SpringRef, SpringValue } from '@react-spring/web';
-import { FC, useEffect, useRef, useState } from 'react';
+import {
+  createRef,
+  FC,
+  MutableRefObject,
+  Ref,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 
-import { usePinch } from '@use-gesture/react';
+import { useGesture, usePinch } from '@use-gesture/react';
 import Page from '../components/Page';
-import { useAnimation } from 'framer-motion';
+import { animate, useAnimation } from 'framer-motion';
+import { usePreventGestureDefault } from '../utils';
 
 interface Props {
   pages?: any[];
 }
 
-const Artifact: FC<Props> = ({ pages = new Array(20).fill(null) }) => {
-  const pagesRef = useRef<any>([]);
+const Artifact: FC<Props> = ({ pages = new Array(100).fill(null) }) => {
+  // const pagesRef = useRef([]);
+  // pagesRef.current = pages.map((_, i) => pagesRef.current[i] ?? createRef());
 
+  const [pan, setPan] = useState(false);
   const controls = useAnimation();
 
-  useEffect(() => {
-    pagesRef.current = pagesRef.current.slice(0, pages.length);
-  }, [pages]);
+  usePreventGestureDefault();
 
-  const bind = usePinch(
-    ({
-      origin: [ox, oy],
-      first,
-      movement: [ms],
-      offset: [s, a],
-      memo,
-      event,
-      args,
-    }) => {
-      const id = args[0];
+  const bind = useGesture(
+    {
+      onPinchStart: ({ event }) => {
+        event.preventDefault();
+        setPan(true);
+      },
+      onPinch: ({
+        origin: [ox, oy],
+        first,
+        movement: [ms],
+        offset: [s, a],
+        memo,
+        event,
+        args,
+      }) => {
+        const id = args[0];
+        // const { height, y } = pagesRef.current[id].getBoundingClientRect();
 
-      if (first) {
-        const { height, y } = pagesRef.current[id].getBoundingClientRect();
-        const ty = oy - (y + height / 2);
-        memo = [pagesRef.current[id].style.translateY || 0, ty];
-      }
+        controls.start((i) => ({
+          height: ms < 1 ? 80 : 400,
+        }));
 
-      const y = memo[0] - (ms - 1) * memo[1];
-
-      controls.start((i) => ({
-        translateY: y * i * 2,
-      }));
-
-      return memo;
+        return memo;
+      },
+      onPinchEnd: ({ event }) => {
+        event.preventDefault();
+        setPan(false);
+      },
     },
-    {}
+    {
+      eventOptions: {
+        passive: false,
+      },
+    }
   );
 
   return (
@@ -52,13 +69,14 @@ const Artifact: FC<Props> = ({ pages = new Array(20).fill(null) }) => {
       {pages.map((_, i) => (
         <Page
           key={i}
-          pagesRef={pagesRef}
+          // pagesRef={pagesRef}
           pageIndex={i}
           pages={pages}
-          ref={(el) => (pagesRef.current[i] = el)}
           bind={bind}
+          // ref={pagesRef.current[i]}
           animate={controls}
           custom={i}
+          pan={pan}
         />
       ))}
     </div>
