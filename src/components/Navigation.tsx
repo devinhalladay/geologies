@@ -39,7 +39,7 @@ function Navigation() {
           {hasLibrary && (
             <li>
               <NavLink
-                to="/a"
+                to="/library"
                 className={({ isActive }) =>
                   cx(
                     'flex items-center gap-1 hover:bg-moss/10 transition-all duration-200 rounded-md px-2',
@@ -53,44 +53,6 @@ function Navigation() {
               >
                 <GiBookshelf size="1.5em" />
                 <span>Library</span>
-              </NavLink>
-            </li>
-          )}
-          {hasInstapaper && (
-            <li>
-              <NavLink
-                to="/auth/instapaper"
-                className={({ isActive }) =>
-                  cx(
-                    'flex items-center gap-1 hover:bg-moss/10 transition-all duration-200 rounded-md px-2',
-                    {
-                      'font-bold bg-moss/10 p-1 px-6 rounded-md text-moss':
-                        isActive,
-                      'opacity-70 p-1': !isActive,
-                    }
-                  )
-                }
-              >
-                <span>Instapaper</span>
-              </NavLink>
-            </li>
-          )}
-          {hasReadwise && (
-            <li>
-              <NavLink
-                to="/readwise"
-                className={({ isActive }) =>
-                  cx(
-                    'flex items-center gap-1 hover:bg-moss/10 transition-all duration-200 rounded-md px-2',
-                    {
-                      'font-bold bg-moss/10 p-1 px-6 rounded-md text-moss':
-                        isActive,
-                      'opacity-70 p-1': !isActive,
-                    }
-                  )
-                }
-              >
-                <span>Readwise</span>
               </NavLink>
             </li>
           )}

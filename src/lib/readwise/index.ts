@@ -1,3 +1,4 @@
+import { useLocalstorage } from 'rooks';
 import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import useSWR from 'swr';
@@ -8,6 +9,7 @@ interface FetchBookmarksRequest {
   state?: string;
   count?: number;
   id?: number | string;
+  token?: string;
 }
 
 interface FetchBookmarksResponse {
@@ -18,10 +20,7 @@ interface FetchBooksRequest {
   name?: string;
   state?: string;
   count?: number;
-}
-
-interface FetchBookRequest {
-  id?: string | number;
+  token?: string;
 }
 
 interface FetchBooksResponse {
@@ -33,23 +32,34 @@ const BASE_URL = 'https://readwise.io/api/';
 export const request = async (
   url,
   method: 'POST' | 'GET',
+  token: string,
   options?: object
 ) => {
   return fetch(BASE_URL + url, {
     method: method,
     headers: {
-      Authorization: `Token ${process.env.REACT_APP_READWISE_TOKEN}`,
+      Authorization: `Token ${token}`,
       'content-type': 'application/json',
     },
     ...options,
   });
 };
 
+export const auth = async (token: string) =>
+  await fetch('https://readwise.io/api/v2/auth', {
+    method: 'GET',
+    headers: {
+      Authorization: `Token ${token}`,
+      'content-type': 'application/json',
+    },
+  });
+
 export const fetchHighlights = async ({
   name,
   state,
   count,
   id,
+  token,
 }: FetchBookmarksRequest = {}): Promise<Array<Highlight>> => {
   // const response = await request('v2/highlights?page_size=1000', 'GET', {
   //   headers: {
@@ -63,7 +73,7 @@ export const fetchHighlights = async ({
     {
       method: 'GET',
       headers: {
-        Authorization: `Token ${process.env.REACT_APP_READWISE_TOKEN}`,
+        Authorization: `Token ${token}`,
         'content-type': 'application/json',
       },
     }
@@ -90,11 +100,13 @@ export const fetchHighlights = async ({
 };
 
 export function useHighlights() {
+  const { value: token } = useLocalstorage('g:readwise_token');
+
   const { id } = useParams();
 
   const { data, error, isValidating } = useSWR<Array<Highlight>, any>(
     'v2/highlights',
-    () => fetchHighlights({ id })
+    () => fetchHighlights({ id, token: token as string })
   );
 
   useEffect(() => {
@@ -116,56 +128,17 @@ export function useHighlights() {
   };
 }
 
-export const auth = async () =>
-  await fetch('https://readwise.io/api/v2/auth', {
-    method: 'GET',
-    headers: {
-      Authorization: `Token ${process.env.REACT_APP_READWISE_TOKEN}`,
-      'content-type': 'application/json',
-    },
-  });
-
 export async function fetchBooks({
   name,
   state,
   count,
+  token,
 }: FetchBooksRequest = {}): Promise<Array<Book>> {
   const response = await request(
     'v2/books?category=articles&page_size=500',
-    'GET'
+    'GET',
+    token
   );
-
-  const result = await response.json();
-
-  const results = result.results as FetchBooksResponse;
-
-  const books: Array<Book> = Object.values(results).map((item) => ({
-    id: item.id,
-    title: item.title,
-    author: item.author,
-    category: item.category,
-    source: item.source,
-    num_highlights: item.num_highlights,
-    last_highlight_at: item.last_highlighted_at,
-    updated: item.updated,
-    cover_image_url: item.cover_image_url,
-    highlights_url: item.highlights_url,
-    source_url: item.source_url,
-    asin: item.asin,
-    tags: item.tags,
-  }));
-
-  return books.sort((a, b) => b.num_highlights - a.num_highlights);
-}
-
-export async function fetchBook({ id }: FetchBookRequest = {}): Promise<
-  Array<Book>
-> {
-  const response = await request('v2/highlights', 'GET', {
-    body: {
-      book_id: id,
-    },
-  });
 
   const result = await response.json();
 
@@ -191,9 +164,11 @@ export async function fetchBook({ id }: FetchBookRequest = {}): Promise<
 }
 
 export function useBooks() {
+  const { value: token } = useLocalstorage('g:readwise_token');
+
   const { data, error, isValidating } = useSWR<Array<Book>, any>(
     'v2/books',
-    fetchBooks
+    () => fetchBooks({ token: token as string })
   );
 
   useEffect(() => {
@@ -211,31 +186,6 @@ export function useBooks() {
 
   return {
     books: data || [],
-    loading: (!data && !error) || isValidating,
-  };
-}
-
-export function useBook() {
-  const { data, error, isValidating } = useSWR<Array<Book>, any>(
-    'v2/highlights',
-    fetchBooks
-  );
-
-  useEffect(() => {
-    if (error) {
-      if (
-        error.response.statusCode === 401 ||
-        error.response.statusCode === 403
-      ) {
-        console.error('Invalid Credentials');
-      } else {
-        throw error;
-      }
-    }
-  }, [error]);
-
-  return {
-    book: data || [],
     loading: (!data && !error) || isValidating,
   };
 }

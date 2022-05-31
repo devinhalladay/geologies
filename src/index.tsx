@@ -5,12 +5,17 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { FlagsProvider } from 'flagged';
 import features from './constants/features';
+import { HomebaseProvider } from 'homebase-react';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <FlagsProvider features={features}>
-      <App />
+      <HomebaseProvider
+        config={{ initialData: [{ counter: { id: 1, count: 0 } }] }}
+      >
+        <App />
+      </HomebaseProvider>
     </FlagsProvider>
   </React.StrictMode>
 );

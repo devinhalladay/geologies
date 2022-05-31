@@ -1,32 +1,7 @@
-import React, {
-  FC,
-  MutableRefObject,
-  Ref,
-  useEffect,
-  useImperativeHandle,
-  useRef,
-  useState,
-} from 'react';
-import { useTransition, animated, useSpring } from '@react-spring/web';
+import { FC, useEffect, useRef } from 'react';
 
-import {
-  createUseGesture,
-  GestureHandlers,
-  GestureOptions,
-  pinchAction,
-  ReactDOMAttributes,
-  useDrag,
-  useGesture,
-  usePinch,
-} from '@use-gesture/react';
-
-import {
-  animate as framer,
-  motion,
-  useElementScroll,
-  useViewportScroll,
-} from 'framer-motion';
-import { AnimationControls } from 'framer-motion/types/animation/types';
+import { animate as framer, motion } from 'framer-motion';
+import { AnimationControls } from 'framer-motion';
 
 interface Props {
   // pagesRef: any;

@@ -1,27 +1,14 @@
-import React from 'react';
 import { useParams } from 'react-router-dom';
-import { useBook, useHighlights } from '../lib/readwise';
+import { useHighlights } from '../lib/readwise';
 
-import { SpringRef, SpringValue } from '@react-spring/web';
-import {
-  createRef,
-  FC,
-  MutableRefObject,
-  Ref,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import { useState } from 'react';
 
-import { useGesture, usePinch } from '@use-gesture/react';
+import { useGesture } from '@use-gesture/react';
+import { useAnimation } from 'framer-motion';
 import Page from '../components/Page';
-import { animate, useAnimation } from 'framer-motion';
 import { usePreventGestureDefault } from '../utils';
 
 function Article(props) {
-  const { id } = useParams();
-
   const { bookmarks, loading } = useHighlights();
 
   const [pan, setPan] = useState(false);
