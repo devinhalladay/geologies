@@ -1,18 +1,8 @@
-import { SpringRef, SpringValue } from '@react-spring/web';
-import {
-  createRef,
-  FC,
-  MutableRefObject,
-  Ref,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import { FC, useState } from 'react';
 
-import { useGesture, usePinch } from '@use-gesture/react';
+import { useGesture } from '@use-gesture/react';
+import { useAnimation } from 'framer-motion';
 import Page from '../components/Page';
-import { animate, useAnimation } from 'framer-motion';
 import { usePreventGestureDefault } from '../utils';
 
 interface Props {
