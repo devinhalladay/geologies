@@ -4,7 +4,6 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Navigation from './components/Navigation';
 import Article from './views/Article';
 import Artifact from './views/Artifact';
-import Instapaper from './views/auth/Instapaper';
 import Readwise from './views/Readwise';
 import Home from './views/Home';
 import Library from './views/Library';
@@ -23,7 +22,6 @@ const App: FC = () => {
             <Route path="/" element={<Home />} />
             <Route path="/a/artifact" element={<Artifact />} />
             <Route path="/readwise/:id" element={<Article />} />
-            <Route path="/auth/instapaper" element={<Instapaper />} />
             <Route path="/readwise" element={<Readwise />} />
           </Routes>
         </div>
