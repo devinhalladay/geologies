@@ -1,15 +1,12 @@
 import { useFeature } from 'flagged';
-import { FC, useEffect } from 'react';
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  useLocation,
-} from 'react-router-dom';
+import { FC } from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Navigation from './components/Navigation';
-import Library from './views/Library';
+import Article from './views/Article';
 import Artifact from './views/Artifact';
+import Readwise from './views/Readwise';
 import Home from './views/Home';
+import Library from './views/Library';
 
 const App: FC = () => {
   const hasLibrary = useFeature('library');
@@ -20,12 +17,12 @@ const App: FC = () => {
         <div>
           <Navigation />
 
-          {/* A <Routes> looks through its children <Route>s and
-            renders the first one that matches the current URL. */}
           <Routes>
             {hasLibrary && <Route path="/a" element={<Library />} />}
             <Route path="/" element={<Home />} />
             <Route path="/a/artifact" element={<Artifact />} />
+            <Route path="/readwise/:id" element={<Article />} />
+            <Route path="/readwise" element={<Readwise />} />
           </Routes>
         </div>
       </Router>
