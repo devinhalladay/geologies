@@ -7,12 +7,25 @@ function Readwise() {
 
   return token == null ? (
     <div>
+      <div className="flex flex-col md:flex-row items-center pb-4 gap-x-4 font-sans">
+        <div className="flex flex-col gap-2 grow items-center md:items-start">
+          <h1 className="text-xl font-medium">Readwise Library</h1>
+          <div className="bg-moss/20 rounded-md w-full p-4 text-sm">
+            <p>
+              This is an early alpha feature, but I'm building in public. Some
+              things will be broken, and interactions and features are not
+              complete.
+            </p>
+          </div>
+        </div>
+      </div>
       <p className="mb-4">
         Enter your Readwise access token, which you can access{' '}
         <a
           href="https://readwise.io/access_token"
           target="_blank"
           rel="noopener noreferrer"
+          className="text-moss underline"
         >
           here
         </a>{' '}

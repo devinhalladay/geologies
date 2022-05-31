@@ -1,8 +1,9 @@
-import { isDevelopment } from './../utils/index';
+// import { isDevelopment } from './../utils/index';
+// isDevelopment() ? true : false
 
 const features = {
-  library: isDevelopment() ? true : false,
-  readwise: isDevelopment() ? true : false,
+  library: true,
+  readwise: true,
 };
 
 export default features;
