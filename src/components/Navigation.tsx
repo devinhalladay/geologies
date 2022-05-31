@@ -78,7 +78,7 @@ function Navigation() {
           {hasReadwise && (
             <li>
               <NavLink
-                to="/auth/readwise"
+                to="/readwise"
                 className={({ isActive }) =>
                   cx(
                     'flex items-center gap-1 hover:bg-moss/10 transition-all duration-200 rounded-md px-2',

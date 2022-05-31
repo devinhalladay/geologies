@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
-import { useBooks } from '../../lib/readwise';
+import { useBooks } from '../lib/readwise';
 
 function Readwise() {
   const { books, loading } = useBooks();
-
-  const [boooooks, setBoooks] = useState(books);
 
   return loading ? (
     <div>'Loading…'</div>
@@ -14,7 +12,7 @@ function Readwise() {
         <a
           key={book.id}
           className="flex gap-4 border-b border-moss/40 pb-4"
-          href={`/a/${book.id}`}
+          href={`/readwise/${book.id}`}
         >
           <div className="flex flex-col space-2 grow">
             <p>{book.title}</p>
