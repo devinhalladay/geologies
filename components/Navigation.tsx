@@ -1,5 +1,6 @@
 import { useFeature } from 'flagged';
 import { GiBookshelf, GiGlobe } from 'react-icons/gi';
+import language from '../constants/language';
 
 import Masthead from './Masthead';
 import NavItem from './NavItem';
@@ -12,9 +13,13 @@ function Navigation() {
       <Masthead />
       <nav className="absolute pt-[32px] sm:pt-0 left-0 right-0 top-0 bottom-0 grow items-center flex justify-center">
         <ul className="flex items-center gap-2 uppercase tracking-wider smallcaps text-xs">
-          <NavItem href="/" icon={GiGlobe} text="Geologies" />
+          <NavItem href="/" icon={GiGlobe} text={language.navigation.home} />
           {hasLibrary && (
-            <NavItem href="/library" icon={GiBookshelf} text="Library" />
+            <NavItem
+              href="/library"
+              icon={GiBookshelf}
+              text={language.navigation.library}
+            />
           )}
         </ul>
       </nav>

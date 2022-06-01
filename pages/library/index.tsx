@@ -5,27 +5,19 @@ import BooksList from '../../components/BooksList';
 import Button from '../../components/Button';
 import { Callout } from '../../components/Callout';
 import TextInput from '../../components/TextInput';
+import language from '../../constants/language';
+import { READWISE_TOKEN_LOCALSTORAGE_KEY } from '../../constants/values';
 
 function Readwise() {
   const [token, setToken] = useLocalstorageState<string>(
-    'g:readwise_token',
+    READWISE_TOKEN_LOCALSTORAGE_KEY,
     null
   );
 
   return token == null ? (
     <div suppressHydrationWarning>
-      <Callout title="Readwise Library">
-        Enter your Readwise access token, which you can access{' '}
-        <a
-          href="https://readwise.io/access_token"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-moss underline"
-        >
-          here
-        </a>{' '}
-        when logged into Readwise. This token will be saved locally in your
-        browser.
+      <Callout title={language.library.callout.title}>
+        {language.library.callout.description}
       </Callout>
       <p className="mb-4"></p>
       <Formik
@@ -56,14 +48,14 @@ function Readwise() {
               minLength={1}
               onChange={handleChange}
               value={values.token}
-              label="Readwise Access Token"
-              placeholder="Your token…"
+              label={language.library.tokenForm.input.label}
+              placeholder={language.library.tokenForm.input.placeholder}
             />
 
             {errors.token}
 
             <Button type="submit" disabled={isSubmitting}>
-              Save Readwise token locally
+              {language.library.tokenForm.submit.label}
             </Button>
           </form>
         )}

@@ -1,5 +1,8 @@
-import { Html, Head, Main, NextScript } from 'next/document';
+import { Head, Html, Main, NextScript } from 'next/document';
 import Script from 'next/script';
+
+import language from '../constants/language';
+import { THEME_COLOR } from '../constants/values';
 
 export default function Document() {
   return (
@@ -74,7 +77,7 @@ export default function Document() {
           name="viewport"
           content="width=device-width, initial-scale=1, user-scalable=no"
         />
-        <meta name="theme-color" content="#000000" />
+        <meta name="theme-color" content={THEME_COLOR} />
         <meta
           name="description"
           content="Welcome to Geologies: a new place to read, annotate, and cross-link webpages and PDFs. It's your own, private space, with everything hosted locally. All your saves, highlights, and annotations, are portable and interoperable with other tools you use every day."
@@ -82,37 +85,25 @@ export default function Document() {
         <link rel="apple-touch-icon" href="/logo192.png" />
         <link rel="manifest" href="/manifest.json" />
 
-        <title>Geologies Reader • Dig deeper when reading</title>
-        <meta
-          name="title"
-          content="Geologies Reader • Dig deeper when reading"
-        />
-        <meta
-          name="description"
-          content="Save, read, annotate, and cross-link webpages and PDFs. All your highlights, and annotations are portable, and interoperable with other tools you use every day."
-        />
+        <title>{language.site.seo.title}</title>
+        <meta name="title" content={language.site.seo.title} />
+        <meta name="description" content={language.site.seo.description} />
 
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://geologies.network/" />
-        <meta
-          property="og:title"
-          content="Geologies Reader • Dig deeper when reading"
-        />
+        <meta property="og:title" content={language.site.seo.title} />
         <meta
           property="og:description"
-          content="Save, read, annotate, and cross-link webpages and PDFs. All your highlights, and annotations are portable, and interoperable with other tools you use every day."
+          content={language.site.seo.description}
         />
         <meta property="og:image" content="https://geologies.network/seo.png" />
 
         <meta property="twitter:card" content="summary_large_image" />
         <meta property="twitter:url" content="https://geologies.network/" />
-        <meta
-          property="twitter:title"
-          content="Geologies Reader • Dig deeper when reading"
-        />
+        <meta property="twitter:title" content={language.site.seo.title} />
         <meta
           property="twitter:description"
-          content="Save, read, annotate, and cross-link webpages and PDFs. All your highlights, and annotations are portable, and interoperable with other tools you use every day."
+          content={language.site.seo.description}
         />
         <meta
           property="twitter:image"

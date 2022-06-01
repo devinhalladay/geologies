@@ -2,7 +2,8 @@ import { Field, Form, FormikProvider, useFormik } from 'formik';
 import Fuse from 'fuse.js';
 import { useEffect, useRef, useState } from 'react';
 import { GiMagnifyingGlass } from 'react-icons/gi';
-import { useLocalstorageState } from 'rooks';
+
+import language from '../constants/language';
 import { useBooks } from '../lib/readwise';
 import { BookLink } from './BookLink';
 
@@ -30,27 +31,21 @@ function BooksList({ token, setToken }) {
     },
   });
 
-  if (error)
-    return (
-      <div>
-        Error authenticating with Readwise. Please clear your localstorage and
-        try again.
-      </div>
-    );
+  if (error) return <div>{language.library.error}</div>;
 
   return loading ? (
-    <div suppressHydrationWarning>Loading your Readwise library…</div>
+    <div suppressHydrationWarning>{language.library.loading}</div>
   ) : (
     <div suppressHydrationWarning className="flex flex-col gap-y-4">
       <div className="flex flex-col md:flex-row items-center pb-4 gap-x-4 font-sans">
         <div className="flex flex-col gap-2 grow items-center md:items-start">
-          <h1 className="text-xl font-medium">Readwise Library</h1>
+          <h1 className="text-xl font-medium">{language.library.title}</h1>
           <button
             type="submit"
             onClick={() => setToken(null)}
             className="bg-red-600/10 text-red-800 border rounded-md text-xs font-sans w-fit px-1"
           >
-            Disconnect service
+            {language.library.disconnect}
           </button>
         </div>
         <FormikProvider value={formik}>
@@ -58,14 +53,14 @@ function BooksList({ token, setToken }) {
             <Field
               id="query"
               name="query"
-              placeholder="Search articles…"
+              placeholder={language.library.search.input.placeholder}
               className="h-10 border-moss border rounded-md text-sm px-2 outline-none focus:outline-moss grow"
             />
 
             <button
               type="submit"
               className="h-10 w-10 flex items-center justify-center bg-moss text-white border rounded-md text-sm px-2"
-              aria-label="Search"
+              aria-label={language.library.search.submit.ariaLabel}
             >
               <GiMagnifyingGlass size="1.2em" />
             </button>

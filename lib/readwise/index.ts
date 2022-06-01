@@ -1,3 +1,4 @@
+import { READWISE_TOKEN_LOCALSTORAGE_KEY } from './../../constants/values';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useLocalstorage } from 'rooks';
@@ -94,7 +95,7 @@ export const fetchHighlights = async ({
 };
 
 export function useHighlights() {
-  const { value: token } = useLocalstorage('g:readwise_token');
+  const { value: token } = useLocalstorage(READWISE_TOKEN_LOCALSTORAGE_KEY);
 
   const router = useRouter();
   const id = router.query.id as string;

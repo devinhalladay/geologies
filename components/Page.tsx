@@ -1,5 +1,6 @@
 import { animate as framer, AnimationControls, motion } from 'framer-motion';
 import { FC, useEffect, useRef } from 'react';
+import language from '../constants/language';
 
 import { Book, Highlight } from '../lib/readwise/types';
 
@@ -49,7 +50,7 @@ const Page: FC<Props> = ({
       custom={custom}
     >
       <span className="font-sans text-gray-400 text-xs uppercase tracking-wide">
-        {pageIndex + 1}
+        {language.article.highlight.eyebrow(pageIndex + 1)}
       </span>
       <div className="relative h-full w-full text-sm mt-2 gap-2 flex flex-col">
         <p>

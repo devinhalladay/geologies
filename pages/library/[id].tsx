@@ -4,13 +4,14 @@ import { useLocalstorage } from 'rooks';
 
 import { useGesture } from '@use-gesture/react';
 
-import { BookLink } from '../../components/BookLink';
 import Page from '../../components/Page';
 import { useBooks, useHighlights } from '../../lib/readwise';
 import { usePreventGestureDefault } from '../../utils';
+import language from '../../constants/language';
+import { READWISE_TOKEN_LOCALSTORAGE_KEY } from '../../constants/values';
 
 function Article() {
-  const { value: token } = useLocalstorage('g:readwise_token');
+  const { value: token } = useLocalstorage(READWISE_TOKEN_LOCALSTORAGE_KEY);
   const { bookmarks, loading } = useHighlights();
   const { books, loading: loadingBooks, error } = useBooks(token);
 
@@ -54,7 +55,7 @@ function Article() {
         <div className="flex flex-col space-2 grow">
           <h1 className="text-xl font-sans">{book.title}</h1>
           <small className="text-moss/70">
-            <span className="capitalize">{book.source}</span> • {book.author}
+            {language.article.metadata(book)}
           </small>
           <a
             href={book.highlights_url}
@@ -62,7 +63,7 @@ function Article() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            View on Readwise
+            {language.article.readwiseLink}
           </a>
         </div>
         <div className="w-14 h-14 shrink-0">
