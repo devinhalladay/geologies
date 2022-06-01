@@ -7,7 +7,10 @@ import { Callout } from '../../components/Callout';
 import TextInput from '../../components/TextInput';
 
 function Readwise() {
-  const [token, setToken] = useLocalstorageState('g:readwise_token', null);
+  const [token, setToken] = useLocalstorageState<string>(
+    'g:readwise_token',
+    null
+  );
 
   return token == null ? (
     <div suppressHydrationWarning>
@@ -49,6 +52,8 @@ function Readwise() {
               onBlur={handleBlur}
               type="text"
               name="token"
+              required
+              minLength={1}
               onChange={handleChange}
               value={values.token}
               label="Readwise Access Token"

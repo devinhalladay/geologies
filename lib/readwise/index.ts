@@ -3,6 +3,7 @@ import { mutate } from 'swr';
 import { useEffect } from 'react';
 import { useLocalstorage } from 'rooks';
 import useSWR from 'swr';
+
 import { Book, Highlight, RawBook, RawHighlight } from './types';
 
 interface FetchBookmarksRequest {
@@ -166,9 +167,8 @@ export function useBooks(token: string) {
   //   mutate('v2/books');
   // }, [token]);
 
-  const { data, error, isValidating } = useSWR<Array<Book>, any>(
-    'v2/books',
-    () => fetchBooks({ token: token as string })
+  const { data, error, isValidating } = useSWR('v2/books', () =>
+    fetchBooks({ token: token })
   );
 
   useEffect(() => {
@@ -184,6 +184,7 @@ export function useBooks(token: string) {
   return {
     books: data || [],
     loading: (!data && !error) || isValidating,
+    error: error,
   };
 }
 
