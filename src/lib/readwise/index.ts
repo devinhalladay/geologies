@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useLocalstorage } from 'rooks';
 import useSWR from 'swr';
+
 import { Book, Highlight, RawBook, RawHighlight } from './types';
 
 interface FetchBookmarksRequest {
@@ -97,17 +98,13 @@ export function useHighlights() {
 
   const { id } = useParams();
 
-  const { data, error, isValidating } = useSWR<Array<Highlight>, any>(
-    'v2/highlights',
-    () => fetchHighlights({ id, token: token as string })
+  const { data, error, isValidating } = useSWR('v2/highlights', () =>
+    fetchHighlights({ id, token: token as string })
   );
 
   useEffect(() => {
     if (error) {
-      if (
-        error.response.statusCode === 401 ||
-        error.response.statusCode === 403
-      ) {
+      if (error.status === 401 || error.status === 403) {
         console.log('Invalid Credentials');
       } else {
         throw error;
@@ -156,20 +153,16 @@ export async function fetchBooks({
   return books.sort((a, b) => b.num_highlights - a.num_highlights);
 }
 
-export function useBooks() {
-  const { value: token } = useLocalstorage('g:readwise_token');
+export function useBooks(token: string) {
+  // const { value: token } = useLocalstorage('g:readwise_token');
 
-  const { data, error, isValidating } = useSWR<Array<Book>, any>(
-    'v2/books',
-    () => fetchBooks({ token: token as string })
+  const { data, error, isValidating } = useSWR('v2/books', () =>
+    fetchBooks({ token: token })
   );
 
   useEffect(() => {
     if (error) {
-      if (
-        error.response.statusCode === 401 ||
-        error.response.statusCode === 403
-      ) {
+      if (error.status === 401 || error.status === 403) {
         console.error('Invalid Credentials');
       } else {
         throw error;
@@ -180,6 +173,7 @@ export function useBooks() {
   return {
     books: data || [],
     loading: (!data && !error) || isValidating,
+    error: error,
   };
 }
 

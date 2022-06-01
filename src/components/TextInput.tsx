@@ -1,14 +1,16 @@
 import React, { FC } from 'react';
 
-const TextInput: FC<{
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  onBlur: (event: React.FocusEvent<HTMLInputElement>) => void;
-  value: string;
-  name: string;
-  placeholder: string;
-  label: string;
-  type: React.HTMLInputTypeAttribute;
-}> = ({ onChange, onBlur, value, placeholder, name, label }) => {
+const TextInput: FC<
+  React.InputHTMLAttributes<HTMLInputElement> & {
+    onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    onBlur: (event: React.FocusEvent<HTMLInputElement>) => void;
+    value: string;
+    name: string;
+    placeholder: string;
+    label: string;
+    type: React.HTMLInputTypeAttribute;
+  }
+> = ({ onChange, onBlur, value, placeholder, name, label, ...props }) => {
   return (
     <div className="flex flex-col space-y-1">
       <label
@@ -25,6 +27,7 @@ const TextInput: FC<{
         value={value}
         className="h-10 border-moss border rounded-md text-sm px-2 outline-none focus:outline-moss"
         placeholder={placeholder}
+        {...props}
       />
     </div>
   );
