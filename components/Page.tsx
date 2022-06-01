@@ -1,27 +1,27 @@
-import { FC, useEffect, useRef } from 'react';
-
 import { animate as framer, AnimationControls, motion } from 'framer-motion';
+import { FC, useEffect, useRef } from 'react';
+import language from '../constants/language';
+
+import { Book, Highlight } from '../lib/readwise/types';
 
 interface Props {
   pageIndex: number;
-  pages: any[];
   bind: any;
   animate: AnimationControls;
   custom: any;
   pan: boolean;
-  text?: string;
+  bookmark: Highlight;
+  token: string;
 }
 
 const Page: FC<Props> = ({
   pageIndex,
-  pages,
   bind,
   animate,
   custom,
   pan,
-  text,
+  bookmark,
 }) => {
-  // let pageRef = pagesRef.current[pageIndex];
   const pageRef = useRef<HTMLDivElement>();
   const highlightRef = useRef<HTMLParagraphElement>(null);
 
@@ -29,6 +29,8 @@ const Page: FC<Props> = ({
     let topPos =
       highlightRef.current.offsetTop + highlightRef.current.clientHeight - 8;
     console.log(topPos);
+
+    highlightRef.current.className = 'bg-moss/20';
 
     if (pan) {
       framer(pageRef.current.scrollTop, topPos, {
@@ -40,17 +42,19 @@ const Page: FC<Props> = ({
 
   return (
     <motion.div
-      className="w-full mb-1 bg-white border border-black/10 p-2 shadow-sm overflow-y-scroll"
+      className="w-full mb-1 bg-white border border-black/10 pb-2 px-2 pt-1 shadow-sm overflow-y-scroll"
       key={pageIndex}
       ref={pageRef}
       {...bind(pageIndex)}
       animate={animate}
       custom={custom}
     >
-      <span className="font-sans text-gray-400">P {pageIndex + 1}</span>
+      <span className="font-sans text-gray-400 text-xs uppercase tracking-wide">
+        {language.article.highlight.eyebrow(pageIndex + 1)}
+      </span>
       <div className="relative h-full w-full text-sm mt-2 gap-2 flex flex-col">
         <p>
-          testestset test <span ref={highlightRef}>{text}</span> test
+          <span ref={highlightRef}>{bookmark.text}</span>
         </p>
       </div>
     </motion.div>

@@ -1,8 +1,8 @@
+import { READWISE_TOKEN_LOCALSTORAGE_KEY } from './../../constants/values';
 import { useRouter } from 'next/router';
-import { mutate } from 'swr';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocalstorage } from 'rooks';
-import useSWR from 'swr';
+import useSWR, { mutate } from 'swr';
 
 import { Book, Highlight, RawBook, RawHighlight } from './types';
 
@@ -95,7 +95,7 @@ export const fetchHighlights = async ({
 };
 
 export function useHighlights() {
-  const { value: token } = useLocalstorage('g:readwise_token');
+  const { value: token } = useLocalstorage(READWISE_TOKEN_LOCALSTORAGE_KEY);
 
   const router = useRouter();
   const id = router.query.id as string;
@@ -125,12 +125,9 @@ export function useHighlights() {
   };
 }
 
-export async function fetchBooks({
-  name,
-  state,
-  count,
-  token,
-}: FetchBooksRequest = {}): Promise<Array<Book>> {
+export async function fetchBooks({ token }: FetchBooksRequest = {}): Promise<
+  Array<Book>
+> {
   const response = await request(
     'v2/books?category=articles&page_size=500',
     'GET',
