@@ -49,8 +49,8 @@ const Page: FC<Props> = ({
     >
       <span className="font-sans text-gray-400">P {pageIndex + 1}</span>
       <div className="relative h-full w-full text-sm mt-2 gap-2 flex flex-col">
-        <p className="highlight" ref={highlightRef}>
-          {text}
+        <p>
+          testestset test <span ref={highlightRef}>{text}</span> test
         </p>
       </div>
     </motion.div>
