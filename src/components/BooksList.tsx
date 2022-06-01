@@ -1,17 +1,21 @@
 import { Field, Form, FormikProvider, useFormik } from 'formik';
 import Fuse from 'fuse.js';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { GiMagnifyingGlass } from 'react-icons/gi';
 import { useBooks } from '../lib/readwise';
 import { BookLink } from './BookLink';
 
 function BooksList({ token, setToken }) {
-  const { books, loading } = useBooks();
+  const { books, loading, error } = useBooks(token);
 
-  const fuse = new Fuse(books, {
-    keys: ['title'],
-    threshold: 0.3,
-  });
+  let fuse = useRef(new Fuse([]));
+
+  useEffect(() => {
+    fuse.current = new Fuse(books, {
+      keys: ['title'],
+      threshold: 0.3,
+    });
+  }, [books]);
 
   const [filteredBooks, setFilteredBooks] = useState(null);
 
@@ -20,10 +24,18 @@ function BooksList({ token, setToken }) {
       query: '',
     },
     onSubmit: async (values) => {
-      const search = fuse.search(values.query);
+      const search = fuse.current.search(values.query);
       setFilteredBooks(values.query.length ? search : null);
     },
   });
+
+  if (error)
+    return (
+      <div>
+        Error authenticating with Readwise. Please clear your localstorage and
+        try again.
+      </div>
+    );
 
   return loading ? (
     <div>Loading your Readwise library…</div>
