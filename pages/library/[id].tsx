@@ -1,13 +1,13 @@
 import { useAnimation } from 'framer-motion';
 import { useState } from 'react';
+import { useLocalstorage } from 'rooks';
 
 import { useGesture } from '@use-gesture/react';
 
+import { BookLink } from '../../components/BookLink';
 import Page from '../../components/Page';
 import { useBooks, useHighlights } from '../../lib/readwise';
 import { usePreventGestureDefault } from '../../utils';
-import { useLocalstorage } from 'rooks';
-import { BookLink } from '../../components/BookLink';
 
 function Article() {
   const { value: token } = useLocalstorage('g:readwise_token');
@@ -75,14 +75,14 @@ function Article() {
       </div>
       {bookmarks.map((bookmark, i) => (
         <Page
+          token={token}
+          bookmark={bookmark}
           key={bookmark.id}
           pageIndex={i}
-          pages={bookmarks}
           bind={bind}
           animate={controls}
           custom={i}
           pan={pan}
-          text={bookmark.text}
         />
       ))}
     </div>
