@@ -1,5 +1,5 @@
+import { useRouter } from 'next/router';
 import { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
 import { useLocalstorage } from 'rooks';
 import useSWR from 'swr';
 import { Book, Highlight, RawBook, RawHighlight } from './types';
@@ -95,7 +95,8 @@ export const fetchHighlights = async ({
 export function useHighlights() {
   const { value: token } = useLocalstorage('g:readwise_token');
 
-  const { id } = useParams();
+  const router = useRouter();
+  const id = router.query.id as string;
 
   const { data, error, isValidating } = useSWR<Array<Highlight>, any>(
     'v2/highlights',
@@ -166,10 +167,7 @@ export function useBooks() {
 
   useEffect(() => {
     if (error) {
-      if (
-        error.response.statusCode === 401 ||
-        error.response.statusCode === 403
-      ) {
+      if (error.status === 401 || error.status === 403) {
         console.error('Invalid Credentials');
       } else {
         throw error;

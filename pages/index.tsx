@@ -1,9 +1,9 @@
 import { TwitterTweetEmbed } from 'react-twitter-embed';
 
-import { usePageViews } from '../hooks/analytics';
+// import { usePageViews } from '../hooks/analytics';
 
 function Home() {
-  usePageViews();
+  // usePageViews();
 
   return (
     <main>
@@ -28,8 +28,8 @@ function Home() {
             </a>
           </span>{' '}
           or this thread:
-          <TwitterTweetEmbed tweetId="1529509936203440129" />
         </p>
+        <TwitterTweetEmbed tweetId="1529509936203440129" />
         <p className="italic">for the ages,</p>
         <p>
           <a

@@ -1,16 +1,16 @@
 import { Formik } from 'formik';
 import { useLocalstorageState } from 'rooks';
 
-import BooksList from '../components/BooksList';
-import Button from '../components/Button';
-import { Callout } from '../components/Callout';
-import TextInput from '../components/TextInput';
+import BooksList from '../../components/BooksList';
+import Button from '../../components/Button';
+import { Callout } from '../../components/Callout';
+import TextInput from '../../components/TextInput';
 
 function Readwise() {
   const [token, setToken] = useLocalstorageState('g:readwise_token', null);
 
   return token == null ? (
-    <div>
+    <div suppressHydrationWarning>
       <Callout title="Readwise Library">
         Enter your Readwise access token, which you can access{' '}
         <a

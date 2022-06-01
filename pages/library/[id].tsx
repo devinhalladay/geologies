@@ -3,9 +3,9 @@ import { useState } from 'react';
 
 import { useGesture } from '@use-gesture/react';
 
-import Page from '../components/Page';
-import { useHighlights } from '../lib/readwise';
-import { usePreventGestureDefault } from '../utils';
+import Page from '../../components/Page';
+import { useHighlights } from '../../lib/readwise';
+import { usePreventGestureDefault } from '../../utils';
 
 function Article() {
   const { bookmarks, loading } = useHighlights();
