@@ -1,6 +1,7 @@
 import { useFeature } from 'flagged';
 import { FC } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+
 import Navigation from './components/Navigation';
 import Article from './views/Article';
 import Home from './views/Home';
@@ -14,10 +15,12 @@ const App: FC = () => {
       <Router>
         <div>
           <Navigation />
-
           <Routes>
-            {hasLibrary && <Route path="/library" element={<Library />} />}
+            {/* HOME */}
             <Route path="/" element={<Home />} />
+            {/* LIBRARY */}
+            {hasLibrary && <Route path="/library" element={<Library />} />}
+            {/* ARTICLE */}
             <Route path="/library/:id" element={<Article />} />
           </Routes>
         </div>

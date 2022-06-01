@@ -6,10 +6,11 @@ module.exports = {
     },
     extend: {
       fontSize: {
+        xs: '12px',
         base: '18px',
       },
       colors: {
-        moss: '#3e5a21',
+        moss: '#295123',
       },
     },
   },

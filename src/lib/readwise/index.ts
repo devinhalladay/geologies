@@ -61,13 +61,6 @@ export const fetchHighlights = async ({
   id,
   token,
 }: FetchBookmarksRequest = {}): Promise<Array<Highlight>> => {
-  // const response = await request('v2/highlights?page_size=1000', 'GET', {
-  //   headers: {
-  //     Authorization: `Token ${process.env.READWISE_TOKEN}`,
-  //     'content-type': 'application/json',
-  //   },
-  // });
-
   const response = await fetch(
     BASE_URL + `v2/highlights?page_size=1000&book_id=${id}`,
     {
