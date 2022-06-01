@@ -1,4 +1,4 @@
-import React from 'react';
+import { TwitterTweetEmbed } from 'react-twitter-embed';
 
 import { usePageViews } from '../hooks/analytics';
 
@@ -16,6 +16,8 @@ function Home() {
           portable and interoperable with other tools you use every day.
         </p>
         <p className="indent-8 mb-4">
+          I'll be working on this in my spare time to improve my technical
+          skills and explore some new ideas I've had for reading environments.
           <span>
             <a
               href="https://github.com/devinhalladay/geologies"
@@ -25,10 +27,8 @@ function Home() {
               Stay tuned on Github ~
             </a>
           </span>{' '}
-          I'll be working on this in my spare time to improve my technical
-          skills and explore some new ideas I've had for reading environments.
-          Many of the interactions and features are inspired by Liquid Text,
-          Logseq, Roam Research, and Instapaper.
+          or this thread:
+          <TwitterTweetEmbed tweetId="1529509936203440129" />
         </p>
         <p className="italic">for the ages,</p>
         <p>
