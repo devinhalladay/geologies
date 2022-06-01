@@ -99,16 +99,13 @@ export function useHighlights() {
   const id = router.query.id as string;
 
   const { data, error, isValidating } = useSWR<Array<Highlight>, any>(
-    'v2/highlights',
+    id ? 'v2/highlights' : null,
     () => fetchHighlights({ id, token: token as string })
   );
 
   useEffect(() => {
     if (error) {
-      if (
-        error.response.statusCode === 401 ||
-        error.response.statusCode === 403
-      ) {
+      if (error.status === 401 || error.status === 403) {
         console.log('Invalid Credentials');
       } else {
         throw error;
