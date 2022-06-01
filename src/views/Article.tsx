@@ -1,4 +1,3 @@
-import { useParams } from 'react-router-dom';
 import { useHighlights } from '../lib/readwise';
 
 import { useState } from 'react';

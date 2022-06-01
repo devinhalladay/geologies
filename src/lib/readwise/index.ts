@@ -1,8 +1,8 @@
-import { useLocalstorage } from 'rooks';
-import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import { useLocalstorage } from 'rooks';
 import useSWR from 'swr';
-import { Highlight, RawHighlight, Book, RawBook } from './types';
+import { Book, Highlight, RawBook, RawHighlight } from './types';
 
 interface FetchBookmarksRequest {
   name?: string;

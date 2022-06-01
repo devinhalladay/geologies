@@ -1,5 +1,4 @@
-// import { isDevelopment } from './../utils/index';
-// isDevelopment() ? true : false
+import { isDevelopment } from './../utils/index';
 
 const features = {
   library: true,
