@@ -15,7 +15,10 @@ export const BookLink: FC<Props> = ({ book }) => {
       <div className="flex flex-col space-2 grow">
         <p>{book.title}</p>
         <small className="text-moss/70">
-          <span className="capitalize">{book.source}</span> • {book.author}
+          <span className="capitalize">{book.source}</span> •{' '}
+          <a href={book.source_url} target="_blank" rel="noopener noreferrer">
+            {book.author}
+          </a>
         </small>
       </div>
       <div className="w-14 h-14 shrink-0">
