@@ -12,8 +12,11 @@ body {
   }
 }
 
-a:hover {
-  color: #3e5a21;
+main a {
+  @apply underline decoration-dotted transition-all duration-200 ease-in-out rounded-md;
+  &:hover {
+    @apply text-moss p-1 -m-1 bg-moss/10;
+  }
 }
 
 .highlight {

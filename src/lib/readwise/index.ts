@@ -1,8 +1,8 @@
-import { useLocalstorage } from 'rooks';
-import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import { useLocalstorage } from 'rooks';
 import useSWR from 'swr';
-import { Highlight, RawHighlight, Book, RawBook } from './types';
+import { Book, Highlight, RawBook, RawHighlight } from './types';
 
 interface FetchBookmarksRequest {
   name?: string;
@@ -61,13 +61,6 @@ export const fetchHighlights = async ({
   id,
   token,
 }: FetchBookmarksRequest = {}): Promise<Array<Highlight>> => {
-  // const response = await request('v2/highlights?page_size=1000', 'GET', {
-  //   headers: {
-  //     Authorization: `Token ${process.env.READWISE_TOKEN}`,
-  //     'content-type': 'application/json',
-  //   },
-  // });
-
   const response = await fetch(
     BASE_URL + `v2/highlights?page_size=1000&book_id=${id}`,
     {

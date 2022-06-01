@@ -1,10 +1,8 @@
 import { FC, useEffect, useRef } from 'react';
 
-import { animate as framer, motion } from 'framer-motion';
-import { AnimationControls } from 'framer-motion';
+import { animate as framer, AnimationControls, motion } from 'framer-motion';
 
 interface Props {
-  // pagesRef: any;
   pageIndex: number;
   pages: any[];
   bind: any;

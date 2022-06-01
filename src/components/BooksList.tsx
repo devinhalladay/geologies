@@ -1,15 +1,9 @@
-import {
-  Field,
-  Form,
-  Formik,
-  FormikProvider,
-  useFormik,
-  useFormikContext,
-} from 'formik';
+import { Field, Form, FormikProvider, useFormik } from 'formik';
 import Fuse from 'fuse.js';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { GiMagnifyingGlass } from 'react-icons/gi';
 import { useBooks } from '../lib/readwise';
+import { BookLink } from './BookLink';
 
 function BooksList({ token, setToken }) {
   const { books, loading } = useBooks();
@@ -66,32 +60,10 @@ function BooksList({ token, setToken }) {
         </FormikProvider>
       </div>
 
-      <div className="border-t border-moss/20 flex flex-col gap-4">
+      <div className="flex flex-col">
         {(filteredBooks == null ? books : filteredBooks).map((book, i) => {
           const b = filteredBooks !== null ? book.item : book;
-          return (
-            <a
-              key={b.id}
-              className={`flex gap-4 border-b border-moss/20 ${
-                i === 0 ? 'py-4' : 'pb-4'
-              }`}
-              href={`/library/${b.id}`}
-            >
-              <div className="flex flex-col space-2 grow">
-                <p>{b.title}</p>
-                <small className="text-moss/70">
-                  {b.source} • by {b.author}
-                </small>
-              </div>
-              <div className="w-14 h-14 shrink-0">
-                <img
-                  src={b.cover_image_url}
-                  alt=""
-                  className="object-cover w-full h-full"
-                />
-              </div>
-            </a>
-          );
+          return <BookLink book={b} key={b.id} />;
         })}
       </div>
     </div>
