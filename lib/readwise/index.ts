@@ -1,5 +1,6 @@
+import { useRouter } from 'next/router';
+import { mutate } from 'swr';
 import { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
 import { useLocalstorage } from 'rooks';
 import useSWR from 'swr';
 
@@ -96,11 +97,17 @@ export const fetchHighlights = async ({
 export function useHighlights() {
   const { value: token } = useLocalstorage('g:readwise_token');
 
-  const { id } = useParams();
+  const router = useRouter();
+  const id = router.query.id as string;
 
-  const { data, error, isValidating } = useSWR('v2/highlights', () =>
-    fetchHighlights({ id, token: token as string })
+  const { data, error, isValidating } = useSWR<Array<Highlight>, any>(
+    id ? 'v2/highlights' : null,
+    () => fetchHighlights({ id, token: token as string })
   );
+
+  useEffect(() => {
+    mutate('v2/highlights', data);
+  }, [token]);
 
   useEffect(() => {
     if (error) {
@@ -155,6 +162,10 @@ export async function fetchBooks({
 
 export function useBooks(token: string) {
   // const { value: token } = useLocalstorage('g:readwise_token');
+
+  // useEffect(() => {
+  //   mutate('v2/books');
+  // }, [token]);
 
   const { data, error, isValidating } = useSWR('v2/books', () =>
     fetchBooks({ token: token })

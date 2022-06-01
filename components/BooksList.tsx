@@ -2,6 +2,7 @@ import { Field, Form, FormikProvider, useFormik } from 'formik';
 import Fuse from 'fuse.js';
 import { useEffect, useRef, useState } from 'react';
 import { GiMagnifyingGlass } from 'react-icons/gi';
+import { useLocalstorageState } from 'rooks';
 import { useBooks } from '../lib/readwise';
 import { BookLink } from './BookLink';
 
@@ -38,9 +39,9 @@ function BooksList({ token, setToken }) {
     );
 
   return loading ? (
-    <div>Loading your Readwise library…</div>
+    <div suppressHydrationWarning>Loading your Readwise library…</div>
   ) : (
-    <div className="flex flex-col gap-y-4">
+    <div suppressHydrationWarning className="flex flex-col gap-y-4">
       <div className="flex flex-col md:flex-row items-center pb-4 gap-x-4 font-sans">
         <div className="flex flex-col gap-2 grow items-center md:items-start">
           <h1 className="text-xl font-medium">Readwise Library</h1>
