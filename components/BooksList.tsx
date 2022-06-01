@@ -2,11 +2,12 @@ import { Field, Form, FormikProvider, useFormik } from 'formik';
 import Fuse from 'fuse.js';
 import { useState } from 'react';
 import { GiMagnifyingGlass } from 'react-icons/gi';
+import { useLocalstorageState } from 'rooks';
 import { useBooks } from '../lib/readwise';
 import { BookLink } from './BookLink';
 
 function BooksList({ token, setToken }) {
-  const { books, loading } = useBooks();
+  const { books, loading } = useBooks(token);
 
   const fuse = new Fuse(books, {
     keys: ['title'],

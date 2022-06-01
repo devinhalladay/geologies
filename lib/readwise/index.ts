@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router';
+import { mutate } from 'swr';
 import { useEffect } from 'react';
 import { useLocalstorage } from 'rooks';
 import useSWR from 'swr';
@@ -104,6 +105,10 @@ export function useHighlights() {
   );
 
   useEffect(() => {
+    mutate('v2/highlights', data);
+  }, [token]);
+
+  useEffect(() => {
     if (error) {
       if (error.status === 401 || error.status === 403) {
         console.log('Invalid Credentials');
@@ -154,8 +159,12 @@ export async function fetchBooks({
   return books.sort((a, b) => b.num_highlights - a.num_highlights);
 }
 
-export function useBooks() {
-  const { value: token } = useLocalstorage('g:readwise_token');
+export function useBooks(token: string) {
+  // const { value: token } = useLocalstorage('g:readwise_token');
+
+  // useEffect(() => {
+  //   mutate('v2/books');
+  // }, [token]);
 
   const { data, error, isValidating } = useSWR<Array<Book>, any>(
     'v2/books',
