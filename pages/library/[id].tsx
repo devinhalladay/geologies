@@ -4,11 +4,26 @@ import { useLocalstorage } from 'rooks';
 
 import { useGesture } from '@use-gesture/react';
 
+import { useEffect } from 'react';
 import Page from '../../components/Page';
-import { useBooks, useHighlights } from '../../lib/readwise';
-import { usePreventGestureDefault } from '../../utils';
 import language from '../../constants/language';
 import { READWISE_TOKEN_LOCALSTORAGE_KEY } from '../../constants/values';
+import { useBooks, useHighlights } from '../../lib/readwise';
+import { Book } from '../../lib/readwise/types';
+import { usePreventGestureDefault } from '../../utils';
+
+const fetchArticle = async (book: Book) => {
+  const reader = await fetch(`/api/reader?url=${book.source_url}`);
+
+  const markup = await reader.json();
+  // const dom = new JSDOM(markup.content, {
+  //   url: book.source_url,
+  //   includeNodeLocations: true,
+  //   storageQuota: 10000000,
+  // });
+
+  return markup.content;
+};
 
 function Article() {
   const { value: token } = useLocalstorage(READWISE_TOKEN_LOCALSTORAGE_KEY);
@@ -19,6 +34,17 @@ function Article() {
 
   const [pan, setPan] = useState(false);
   const controls = useAnimation();
+
+  const [article, setArticle] = useState(null);
+
+  useEffect(() => {
+    if (book) {
+      fetchArticle(book).then((b) => {
+        // console.log(b);
+        setArticle(b);
+      });
+    }
+  }, [book]);
 
   usePreventGestureDefault();
 
@@ -47,7 +73,7 @@ function Article() {
     }
   );
 
-  return loading || loadingBooks ? (
+  return loading || loadingBooks || !article ? (
     <div>Loading…</div>
   ) : (
     <div>
@@ -74,18 +100,21 @@ function Article() {
           />
         </div>
       </div>
-      {bookmarks.map((bookmark, i) => (
-        <Page
-          token={token}
-          bookmark={bookmark}
-          key={bookmark.id}
-          pageIndex={i}
-          bind={bind}
-          animate={controls}
-          custom={i}
-          pan={pan}
-        />
-      ))}
+      {bookmarks.map((bookmark, i) => {
+        return i < 5 ? (
+          <Page
+            token={token}
+            bookmark={bookmark}
+            key={bookmark.id}
+            pageIndex={i}
+            bind={bind}
+            animate={controls}
+            custom={i}
+            article={article}
+            pan={pan}
+          />
+        ) : null;
+      })}
     </div>
   );
 }

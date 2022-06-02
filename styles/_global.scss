@@ -22,3 +22,11 @@ main a {
 .highlight {
   @apply bg-moss/20;
 }
+
+.page {
+  @apply text-base;
+  @apply leading-6;
+  p {
+    @apply mb-4;
+  }
+}
