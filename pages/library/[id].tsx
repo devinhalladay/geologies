@@ -1,19 +1,16 @@
 import { useAnimation } from 'framer-motion';
-import { useState } from 'react';
+import { Interweave, MatcherInterface, MatchResponse } from 'interweave';
+import { useEffect, useRef, useState } from 'react';
 import { useLocalstorage } from 'rooks';
 
 import { useGesture } from '@use-gesture/react';
 
-import { useEffect } from 'react';
-import Page from '../../components/Page';
 import language from '../../constants/language';
 import { READWISE_TOKEN_LOCALSTORAGE_KEY } from '../../constants/values';
 import { useBooks, useHighlights } from '../../lib/readwise';
 import { Book, Highlight } from '../../lib/readwise/types';
-import { usePreventGestureDefault } from '../../utils';
-import { Interweave, MatcherInterface, MatchResponse } from 'interweave';
+import { escapeForRegExp, usePreventGestureDefault } from '../../utils';
 import { ReaderResponse } from '../api/reader';
-import { useRef } from 'react';
 
 const fetchArticle = async (book: Book): Promise<ReaderResponse> => {
   const reader = await fetch(`/api/reader?url=${book.source_url}`);
@@ -34,34 +31,12 @@ function Article() {
       inverseName: 'noFoo',
       propName: 'foo',
       match(string): MatchResponse<any> {
-        // if (
-        //   bookmark.text.includes('This captures something') &&
-        //   string.includes('This captures something')
-        // ) {
-        //   console.log({
-        //     string: string,
-        //     highlight: bookmark.text,
-        //   });
-        // }
-
-        function escapeRegExp(stringToGoIntoTheRegex) {
-          return stringToGoIntoTheRegex.replace(
-            /[-\/\\^$*+?.()|[\]{}]/g,
-            '\\$&'
-          );
-        }
-
-        const regex = new RegExp(escapeRegExp(bookmark.text));
-
-        console.log(regex);
-
+        const regex = new RegExp(escapeForRegExp(bookmark.text));
         const result = string.match(regex);
 
         if (!result) {
           return null;
         }
-
-        console.log(result);
 
         return {
           index: result.index!,
@@ -157,7 +132,7 @@ function Article() {
         <div className="w-14 h-14 shrink-0">
           <img
             src={book.cover_image_url}
-            alt=""
+            alt={language.article.coverImage.alt(book.title)}
             className="object-cover w-full h-full"
           />
         </div>

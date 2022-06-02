@@ -1,9 +1,9 @@
 import { animate as framer, AnimationControls, motion } from 'framer-motion';
-import { Interweave, match, MatcherInterface, MatchResponse } from 'interweave';
+import { Interweave, MatcherInterface, MatchResponse } from 'interweave';
 import { FC, useEffect, useRef } from 'react';
 
 import language from '../constants/language';
-import { Book, Highlight } from '../lib/readwise/types';
+import { Highlight } from '../lib/readwise/types';
 
 interface Props {
   pageIndex: number;
@@ -29,8 +29,8 @@ const Page: FC<Props> = ({
   const highlightRef = useRef<HTMLParagraphElement>(null);
 
   const matcher: MatcherInterface<any> = {
-    inverseName: 'noFoo',
-    propName: 'foo',
+    inverseName: 'noMark',
+    propName: 'mark',
     match(string): MatchResponse<any> {
       const result = string.match(bookmark.text);
 
