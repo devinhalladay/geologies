@@ -83,6 +83,11 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
+"@mozilla/readability@^0.4.2":
+  version "0.4.2"
+  resolved "https://registry.yarnpkg.com/@mozilla/readability/-/readability-0.4.2.tgz#a425f3dccdbe777d45a4e791bd703ebe633ebb87"
+  integrity sha512-48MJXzi4Dhy2fJ3lGjmwdEJKoMmn3oiYew9n/1OW6cZy78hAzRIyDJDBCGrg4PBFDyY4xos+H4LCFn5QVRDcfw==
+
 "@next/env@12.1.6":
   version "12.1.6"
   resolved "https://registry.yarnpkg.com/@next/env/-/env-12.1.6.tgz#5f44823a78335355f00f1687cfc4f1dafa3eca08"
