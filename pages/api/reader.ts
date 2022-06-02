@@ -1,30 +1,18 @@
-import whitespace from 'dom-whitespace';
-import { Readability } from '@mozilla/readability';
-import { NextApiRequest, NextApiResponse } from 'next';
-import { JSDOM } from 'jsdom';
 import htmlclean from 'htmlclean';
+import { JSDOM } from 'jsdom';
+import { NextApiRequest, NextApiResponse } from 'next';
 
-type Data<T> = {
-  /** article title */
-  title: string;
-  /** author metadata */
-  byline: string;
-  /** content direction */
-  dir: string;
-  /** HTML of processed article content */
-  content: T;
-  /** text content of the article (all HTML removed) */
-  textContent: string;
-  /** length of an article, in characters */
-  length: number;
-  /** article description, or short excerpt from the content */
-  excerpt: string;
-  siteName: string;
+import { Readability } from '@mozilla/readability';
+
+export type ReaderResponse = {
+  markup: string;
+  text: string;
+  source: string;
 };
 
 export default async (
   request: NextApiRequest,
-  response: NextApiResponse<string>
+  response: NextApiResponse<ReaderResponse>
 ) => {
   /**
    * Fetch the article HTML as text from source URL
@@ -62,5 +50,9 @@ export default async (
     readerDoc.window.document.body.innerHTML
   );
 
-  response.status(200).send(minifiedMarkup);
+  response.status(200).send({
+    markup: minifiedMarkup,
+    text: reader.textContent,
+    source: reader.content,
+  });
 };
