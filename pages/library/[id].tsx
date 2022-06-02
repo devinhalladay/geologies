@@ -14,10 +14,9 @@ import { usePreventGestureDefault } from '../../utils';
 
 const fetchArticle = async (book: Book) => {
   const reader = await fetch(`/api/reader?url=${book.source_url}`);
+  const markup = await reader.text();
 
-  const markup = await reader.json();
-
-  return markup.content;
+  return markup;
 };
 
 function Article() {
@@ -35,6 +34,8 @@ function Article() {
   useEffect(() => {
     if (book) {
       fetchArticle(book).then((b) => {
+        console.log(b);
+
         // console.log(b);
         setArticle(b);
       });

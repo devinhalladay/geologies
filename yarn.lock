@@ -897,6 +897,11 @@ doctrine@^3.0.0:
   dependencies:
     esutils "^2.0.2"
 
+dom-whitespace@^0.1.2:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/dom-whitespace/-/dom-whitespace-0.1.2.tgz#b35b2dad9d81f2d985a8e3c251d3d252fcc6c006"
+  integrity sha512-cZOgQgWdqSyoVZCsdK/gMy0Nxi+u0p0WiyMi9VkQzyd+2skJwxyi8Wct7U0om5tOqToMaPdznKcDUnSps7zdag==
+
 domexception@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/domexception/-/domexception-4.0.0.tgz#4ad1be56ccadc86fc76d033353999a8037d03673"
@@ -1316,6 +1321,11 @@ html-encoding-sniffer@^3.0.0:
   integrity sha512-oWv4T4yJ52iKrufjnyZPkrN0CH3QnrUqdB6In1g5Fe1mia8GmF36gnfNySxoZtxD5+NmYw1EElVXiBk93UeskA==
   dependencies:
     whatwg-encoding "^2.0.0"
+
+htmlclean@^3.0.8:
+  version "3.0.8"
+  resolved "https://registry.yarnpkg.com/htmlclean/-/htmlclean-3.0.8.tgz#cea451cf5399d4018386a57129489f2d630e62b0"
+  integrity sha512-pxe6KHAQFvn407iNVNs8jpQ43BSy0w2VJ7DOUrbl/wOOy33RgDR1IcOplYqseQBBcdJLEozzeL9RziGCdK2Zsg==
 
 http-proxy-agent@^5.0.0:
   version "5.0.0"
