@@ -16,11 +16,6 @@ const fetchArticle = async (book: Book) => {
   const reader = await fetch(`/api/reader?url=${book.source_url}`);
 
   const markup = await reader.json();
-  // const dom = new JSDOM(markup.content, {
-  //   url: book.source_url,
-  //   includeNodeLocations: true,
-  //   storageQuota: 10000000,
-  // });
 
   return markup.content;
 };

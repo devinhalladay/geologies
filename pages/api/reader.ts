@@ -2,7 +2,7 @@ import { Readability } from '@mozilla/readability';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { JSDOM } from 'jsdom';
 
-type Data = {
+type Data<T> = {
   /** article title */
   title: string;
   /** author metadata */
@@ -22,7 +22,7 @@ type Data = {
 
 export default async (
   request: NextApiRequest,
-  response: NextApiResponse<Data>
+  response: NextApiResponse<Data<string>>
 ) => {
   const url = request.query.url as string;
   const article = await fetch(url);
