@@ -102,7 +102,12 @@ export function useHighlights() {
 
   const { data, error, isValidating } = useSWR<Array<Highlight>, any>(
     id ? 'v2/highlights' : null,
-    () => fetchHighlights({ id, token: token as string })
+    () => fetchHighlights({ id, token: token as string }),
+    {
+      revalidateIfStale: false,
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+    }
   );
 
   useEffect(() => {
@@ -164,8 +169,14 @@ export function useBooks(token: string) {
   //   mutate('v2/books');
   // }, [token]);
 
-  const { data, error, isValidating } = useSWR('v2/books', () =>
-    fetchBooks({ token: token })
+  const { data, error, isValidating } = useSWR(
+    'v2/books',
+    () => fetchBooks({ token: token }),
+    {
+      revalidateIfStale: false,
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+    }
   );
 
   useEffect(() => {
