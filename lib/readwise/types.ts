@@ -96,5 +96,8 @@ export interface FetchBooksRequest {
  * `GET` response body for the Readwise Books API.
  */
 export interface FetchBooksResponse {
-  list: Record<string, RawBook>;
+  count: number;
+  next: any;
+  previous: any;
+  results: Book[];
 }

@@ -35,7 +35,7 @@ const request = async <T>(
     headers: {
       Authorization: `Token ${token}`,
       'content-type': 'application/json',
-      ...options.headers,
+      ...options?.headers,
     },
     ...options,
   });
@@ -133,20 +133,20 @@ export function useHighlights() {
 export async function fetchBooks({
   token,
 }: FetchBooksRequest): Promise<Array<Book>> {
-  const response = await request<FetchBooksResponse>(
+  const { results } = await request<FetchBooksResponse>(
     'v2/books?category=articles&page_size=500',
     'GET',
     token
   );
 
-  const books: Array<Book> = Object.values(response).map((item) => ({
+  const books: Array<Book> = Object.values(results).map((item) => ({
     id: item.id,
     title: item.title,
     author: item.author,
     category: item.category,
     source: item.source,
     num_highlights: item.num_highlights,
-    last_highlight_at: item.last_highlighted_at,
+    last_highlight_at: item.last_highlight_at,
     updated: item.updated,
     cover_image_url: item.cover_image_url,
     highlights_url: item.highlights_url,
