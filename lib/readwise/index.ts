@@ -1,80 +1,74 @@
-import { READWISE_TOKEN_LOCALSTORAGE_KEY } from './../../constants/values';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useLocalstorage } from 'rooks';
 import useSWR, { mutate } from 'swr';
 
-import { Book, Highlight, RawBook, RawHighlight } from './types';
+import {
+  READWISE_API_BASE_URL,
+  READWISE_TOKEN_LOCALSTORAGE_KEY,
+} from '../../constants/values';
+import {
+  Book,
+  FetchBookmarksRequest,
+  FetchBookmarksResponse,
+  FetchBooksRequest,
+  FetchBooksResponse,
+  Highlight,
+} from './types';
 
-interface FetchBookmarksRequest {
-  name?: string;
-  state?: string;
-  count?: number;
-  id?: number | string;
-  token?: string;
-}
-
-interface FetchBookmarksResponse {
-  list: Record<string, RawHighlight>;
-}
-
-interface FetchBooksRequest {
-  name?: string;
-  state?: string;
-  count?: number;
-  token?: string;
-}
-
-interface FetchBooksResponse {
-  list: Record<string, RawBook>;
-}
-
-const BASE_URL = 'https://readwise.io/api/';
-
-export const request = async (
-  url,
-  method: 'POST' | 'GET',
+/**
+ * Fetches data from the Readwie API.
+ * @param url The Readwise API endpoint to hit. Omit the leading slash.
+ * @param method The method to use for the request.
+ * @param token The Readwise user access token to use for the request.
+ * @param options Additional options to pass to the request.
+ * @returns The response body as a JSON object.
+ */
+const request = async <T>(
+  url: string,
+  method: 'POST' | 'GET' | 'DELETE',
   token: string,
-  options?: object
-) => {
-  return fetch(BASE_URL + url, {
+  options?: RequestInit
+): Promise<T> => {
+  const response = await fetch(READWISE_API_BASE_URL + url, {
     method: method,
     headers: {
       Authorization: `Token ${token}`,
       'content-type': 'application/json',
+      ...options?.headers,
     },
     ...options,
   });
+
+  const json = await response.json();
+
+  return json;
 };
 
-export const auth = async (token: string) =>
-  await fetch('https://readwise.io/api/v2/auth', {
-    method: 'GET',
-    headers: {
-      Authorization: `Token ${token}`,
-      'content-type': 'application/json',
-    },
-  });
+/**
+ * Verify the that saved Readwise token is valid.
+ * @param token The user's Readwise access token.
+ * @returns unknown
+ */
+// TODO: Figure out what the response is and type the return value accoringly.
+export const verifyAuth = async (token: string) =>
+  await request<any>('v2/auth', 'GET', token);
 
+/**
+ * Fetch all highlights from a given book.
+ * @param args.id The book ID to fetch highlights from.
+ * @param args.token The user's Readwise access token.
+ * @returns `Highlight[]` – The user's highlights.
+ */
 export const fetchHighlights = async ({
-  name,
-  state,
-  count,
   id,
   token,
-}: FetchBookmarksRequest = {}): Promise<Array<Highlight>> => {
-  const response = await fetch(
-    BASE_URL + `v2/highlights?page_size=1000&book_id=${id}`,
-    {
-      method: 'GET',
-      headers: {
-        Authorization: `Token ${token}`,
-        'content-type': 'application/json',
-      },
-    }
+}: FetchBookmarksRequest): Promise<Highlight[]> => {
+  const result = await request<any>(
+    `v2/highlights?page_size=1000&book_id=${id}`,
+    'GET',
+    token
   );
-
-  const result = await response.json();
   const results = result.results as FetchBookmarksResponse;
 
   const bookmarks: Array<Highlight> = Object.values(results).map((item) => ({
@@ -94,15 +88,26 @@ export const fetchHighlights = async ({
   return bookmarks;
 };
 
+/**
+ * React hook to fetch the user's Readwise bookmarks.
+ * @returns An object with the data and loading state.
+ */
 export function useHighlights() {
-  const { value: token } = useLocalstorage(READWISE_TOKEN_LOCALSTORAGE_KEY);
+  const { value: token }: { value: string } = useLocalstorage(
+    READWISE_TOKEN_LOCALSTORAGE_KEY
+  );
 
   const router = useRouter();
   const id = router.query.id as string;
 
   const { data, error, isValidating } = useSWR<Array<Highlight>, any>(
     id ? 'v2/highlights' : null,
-    () => fetchHighlights({ id, token: token as string })
+    () => fetchHighlights({ id, token }),
+    {
+      revalidateIfStale: false,
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+    }
   );
 
   useEffect(() => {
@@ -125,18 +130,14 @@ export function useHighlights() {
   };
 }
 
-export async function fetchBooks({ token }: FetchBooksRequest = {}): Promise<
-  Array<Book>
-> {
-  const response = await request(
+export async function fetchBooks({
+  token,
+}: FetchBooksRequest): Promise<Array<Book>> {
+  const { results } = await request<FetchBooksResponse>(
     'v2/books?category=articles&page_size=500',
     'GET',
     token
   );
-
-  const result = await response.json();
-
-  const results = result.results as FetchBooksResponse;
 
   const books: Array<Book> = Object.values(results).map((item) => ({
     id: item.id,
@@ -145,7 +146,7 @@ export async function fetchBooks({ token }: FetchBooksRequest = {}): Promise<
     category: item.category,
     source: item.source,
     num_highlights: item.num_highlights,
-    last_highlight_at: item.last_highlighted_at,
+    last_highlight_at: item.last_highlight_at,
     updated: item.updated,
     cover_image_url: item.cover_image_url,
     highlights_url: item.highlights_url,
@@ -158,14 +159,14 @@ export async function fetchBooks({ token }: FetchBooksRequest = {}): Promise<
 }
 
 export function useBooks(token: string) {
-  // const { value: token } = useLocalstorage('g:readwise_token');
-
-  // useEffect(() => {
-  //   mutate('v2/books');
-  // }, [token]);
-
-  const { data, error, isValidating } = useSWR('v2/books', () =>
-    fetchBooks({ token: token })
+  const { data, error, isValidating } = useSWR(
+    'v2/books',
+    () => fetchBooks({ token: token }),
+    {
+      revalidateIfStale: false,
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+    }
   );
 
   useEffect(() => {
@@ -184,9 +185,3 @@ export function useBooks(token: string) {
     error: error,
   };
 }
-
-export const CmsClient: {
-  fetchHighlights(): Promise<Array<Highlight>>;
-} = {
-  fetchHighlights,
-};

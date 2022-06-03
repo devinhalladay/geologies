@@ -1,6 +1,34 @@
-export interface Highlight {
-  id: number;
+/**
+ * The following are type definitions for Readwise.
+ *
+ * [API Documentation](https://readwise.io/api_deets)
+ */
+
+// A const for a type definition extending RawBook. Omit the `text` field.
+// export interface Book extends Omit<RawBook, 'text'> {
+
+type GenericId = string | number;
+
+/**
+ * A tag can be applied to highlights and books.
+ */
+export interface Tag {
+  id: GenericId;
+  name: string;
+}
+
+/**
+ * Stub for a highlight. Detailed highlights should use the `Highlight` type.
+ */
+export interface RawHighlight {
+  id: GenericId;
   text: string;
+}
+
+/**
+ * Detailed highlight object. Extends `RawHighlight`.
+ */
+export interface Highlight extends RawHighlight {
   note: string;
   location: string;
   location_type: string;
@@ -8,17 +36,26 @@ export interface Highlight {
   url: string;
   color: string;
   updated: string;
-  book_id: number;
+  book_id: GenericId;
   tags: Tag[];
 }
 
-export interface Tag {
-  id: number;
-  name: string;
+/**
+ * Stub for a book. Detailed books should use the `Book` type.
+ */
+export interface RawBook {
+  id: GenericId;
+  text: string;
 }
 
-export interface Book {
-  id: number;
+/**
+ * Detailed book object. Extends `RawBook`.
+ *
+ * *This type is consumed by various "source types", which are not always webpages.*
+ */
+
+export interface Book extends Omit<RawBook, 'text'> {
+  id: GenericId;
   title: string;
   author: string;
   category: string;
@@ -33,12 +70,34 @@ export interface Book {
   tags: Tag[];
 }
 
-export interface RawHighlight {
-  id: string;
-  text: string;
+/**
+ * `GET` request body for the Readwise Highlights API.
+ */
+export interface FetchBookmarksRequest {
+  id: GenericId;
+  token: string;
 }
 
-export interface RawBook {
-  id: string;
-  text: string;
+/**
+ * `GET` response body for the Readwise Highlights API.
+ */
+export interface FetchBookmarksResponse {
+  list: Record<string, RawHighlight>;
+}
+
+/**
+ * `GET` request body for the Readwise Books API.
+ */
+export interface FetchBooksRequest {
+  token: string;
+}
+
+/**
+ * `GET` response body for the Readwise Books API.
+ */
+export interface FetchBooksResponse {
+  count: number;
+  next: any;
+  previous: any;
+  results: Book[];
 }

@@ -25,6 +25,10 @@ const language = {
         </a>
       </>
     ),
+    coverImage: {
+      alt: (title: string) =>
+        `A featured image related to the link titled ${title}`,
+    },
     readwiseLink: 'View on Readwise',
     highlight: {
       eyebrow: (index: number) => `${index}`,

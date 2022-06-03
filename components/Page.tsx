@@ -1,8 +1,9 @@
 import { animate as framer, AnimationControls, motion } from 'framer-motion';
+import { Interweave, MatcherInterface, MatchResponse } from 'interweave';
 import { FC, useEffect, useRef } from 'react';
-import language from '../constants/language';
 
-import { Book, Highlight } from '../lib/readwise/types';
+import language from '../constants/language';
+import { Highlight } from '../lib/readwise/types';
 
 interface Props {
   pageIndex: number;
@@ -12,6 +13,7 @@ interface Props {
   pan: boolean;
   bookmark: Highlight;
   token: string;
+  article: any;
 }
 
 const Page: FC<Props> = ({
@@ -21,22 +23,52 @@ const Page: FC<Props> = ({
   custom,
   pan,
   bookmark,
+  article,
 }) => {
   const pageRef = useRef<HTMLDivElement>();
   const highlightRef = useRef<HTMLParagraphElement>(null);
 
+  const matcher: MatcherInterface<any> = {
+    inverseName: 'noMark',
+    propName: 'mark',
+    match(string): MatchResponse<any> {
+      const result = string.match(bookmark.text);
+
+      if (!result) {
+        return null;
+      }
+
+      return {
+        index: result.index!,
+        length: result[0].length,
+        match: result[0],
+        className: 'highlight',
+        valid: true,
+        ref: highlightRef,
+      };
+    },
+    createElement(children, props) {
+      return <span {...props}>{children}</span>;
+    },
+    asTag() {
+      return 'span';
+    },
+  };
+
   useEffect(() => {
-    let topPos =
-      highlightRef.current.offsetTop + highlightRef.current.clientHeight - 8;
-    console.log(topPos);
+    if (highlightRef.current) {
+      {
+        let topPos =
+          highlightRef.current.offsetTop + highlightRef.current.clientHeight;
 
-    highlightRef.current.className = 'bg-moss/20';
-
-    if (pan) {
-      framer(pageRef.current.scrollTop, topPos, {
-        onUpdate: (top) =>
-          pageRef.current.scrollTo({ top, behavior: 'smooth' }),
-      });
+        highlightRef.current.className = 'bg-moss/20';
+        if (pan) {
+          framer(pageRef.current.scrollTop, topPos, {
+            onUpdate: (top) =>
+              pageRef.current.scrollTo({ top, behavior: 'smooth' }),
+          });
+        }
+      }
     }
   }, [pan]);
 
@@ -53,9 +85,7 @@ const Page: FC<Props> = ({
         {language.article.highlight.eyebrow(pageIndex + 1)}
       </span>
       <div className="relative h-full w-full text-sm mt-2 gap-2 flex flex-col">
-        <p>
-          <span ref={highlightRef}>{bookmark.text}</span>
-        </p>
+        <Interweave content={article} matchers={[matcher]} />;
       </div>
     </motion.div>
   );
