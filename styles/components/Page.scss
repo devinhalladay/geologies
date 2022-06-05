@@ -1,0 +1,7 @@
+.page {
+  @apply text-base;
+  @apply leading-6;
+  p {
+    @apply mb-4;
+  }
+}

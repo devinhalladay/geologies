@@ -1,3 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import 'components';
+
 html,
 body {
   @apply text-base;
@@ -9,24 +15,5 @@ body {
 @layer utilities {
   .smallcaps {
     font-variant: small-caps;
-  }
-}
-
-main a {
-  @apply underline decoration-dotted transition-all duration-200 ease-in-out rounded-md;
-  &:hover {
-    @apply text-moss p-1 -m-1 bg-moss/10;
-  }
-}
-
-.highlight {
-  @apply bg-moss/20;
-}
-
-.page {
-  @apply text-base;
-  @apply leading-6;
-  p {
-    @apply mb-4;
   }
 }
